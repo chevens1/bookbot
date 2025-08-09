@@ -1,17 +1,27 @@
-from stats import count_word, return_counts
-
+# main.py
+from stats import count_words, letter_counts, sort_counts_desc
 
 def get_book_text(filepath):
-    with open(filepath) as f:
-        file_content = f.read()
-    return file_content
-
+    with open(filepath, encoding="utf-8") as f:
+        return f.read()
 
 def main():
-    a_book = get_book_text("books/frankenstein.txt")
-    inventory = return_counts(a_book)
-    print(f"{count_word(a_book)} words found in the document")
+    path = "books/frankenstein.txt"
+    text = get_book_text(path)
 
-    print(f"Character counts: {inventory}")
-main()
+    # Compute stats
+    total_words = count_words(text)
+    counts_sorted = sort_counts_desc(letter_counts(text))
 
+    # Report – matches the structure boot.dev expects
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {path}...")
+    print("----------- Word Count ----------")
+    print(f"Found {total_words} total words")
+    print("--------- Character Count -------")
+    for ch, n in counts_sorted:
+        print(f"{ch}: {n}")
+    print("============= END ===============")
+
+if __name__ == "__main__":
+    main()

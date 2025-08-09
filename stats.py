@@ -1,14 +1,28 @@
-def count_word(a_book):
-    words = a_book.split()
-    length = len(words)
-    return length
+# stats.py
 
-def return_counts(a_book):
+def count_words(text):
+    """
+    Count total words by splitting on whitespace.
+    This matches boot.dev's expected total for Frankenstein.
+    """
+    return len(text.split())
+
+def letter_counts(text):
+    """
+    Count only alphabetic characters (Unicode-aware).
+    Use .casefold() so accented letters normalize (e.g., É == é).
+    """
     results = {}
-    for character in a_book:
-        char_lower = character.lower()
-        if char_lower in results:
-            results[char_lower] += 1
-        else:
-            results[char_lower] = 1
+    for ch in text:
+        if ch.isalpha():
+            key = ch.casefold()
+            results[key] = results.get(key, 0) + 1
     return results
+
+def sort_counts_desc(counts):
+    """
+    Sort by:
+      1) count descending (using -count)
+      2) letter ascending as a stable tie-break
+    """
+    return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
